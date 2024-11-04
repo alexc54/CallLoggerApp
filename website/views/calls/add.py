@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from ... import db
 from ...models import Call, Customer
 from ..import views
-import re
+from .validation import validate_call_data
 
 @views.route('/add-call', methods=['GET', 'POST'])
 @login_required
@@ -20,7 +20,7 @@ def add_call():
         if errors:
             for error in errors:
                 flash(error, category='error')
-            return render_template('add_call.html', user=current_user)
+            return render_template('calls/add.html', user=current_user)
 
         # This will check if the customer exists on the customer DB; if not, it will add them
         customer = Customer.query.filter_by(account_number=account_number).first()
@@ -43,29 +43,3 @@ def add_call():
 
     return render_template('calls/add.html', user=current_user)
 
-#Function that validates user entry before changes made to db.
-def validate_call_data(customer_name, account_number, postcode, reason_called):
-    errors = []  # List to collect error messages
-    
-    if len(customer_name) < 3:
-        errors.append("Customer name must be at least 3 characters long!")
-    
-    if len(account_number) < 9 or len(account_number) > 10:
-        errors.append("Invalid Account Number!")        
-        
-    postcode_error = validate_postcode(postcode)
-    if postcode_error:
-        errors.append(postcode_error)
-
-    if reason_called not in ["Sale", "Withdrawal", "General Enquiry", "Complaint", "Online Support"]:
-        errors.append('Invalid reason for call selected.')
-
-    return errors
-
-#Function that will check postcode has been entered correctly
-def validate_postcode(postcode):
-    # Regex pattern for UK postcode
-    pattern = r'^(GIR 0AA|[A-Z]{1,2}[0-9][0-9]?[A-Z]?\s?[0-9][A-Z]{2})$'
-    if not re.match(pattern, postcode):
-        return "Invalid Postcode!"
-    return None 

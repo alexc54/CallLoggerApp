@@ -11,5 +11,5 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.String(50), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
     
-    #creates one-to-many relationship between User and Call (One user(employee) can have multiple calls)
+    #creates one-to-many relationship between User and Call (one user(employee) can have multiple calls)
     calls_handled = db.relationship('Call', back_populates='user')  
