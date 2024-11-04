@@ -1,0 +1,33 @@
+{% extends "shared/base.html" %}
+{% block title %}Edit Call{% endblock %}
+{% block content %}
+
+<h1 align="center">Edit Call changed</h1>
+<form method="POST">
+    <div class="form-group">
+        <label for="customer_name">Customer Name</label>
+        <input type="text" class="form-control" id="customer_name" name="customer_name" value="{{ call_to_edit.customer.name }}" required>
+    </div>
+    <div class="form-group">
+        <label for="account_number">Account Number</label>
+        <input type="text" class="form-control" id="account_number" name="account_number" value="{{ call_to_edit.customer.account_number }}" required>
+    </div>
+    <div class="form-group">
+        <label for="postcode">Postcode</label>
+        <input type="text" class="form-control" id="postcode" name="postcode" value="{{ call_to_edit.customer.postcode }}" required>
+    </div>
+    <div class="form-group">
+        <label for="reason_called">Reason for Call</label>
+        <select class="form-control" id="reason_called" name="reason_called" required>
+            <option value="" disabled>Select reason</option>
+            <option value="Sale" {% if call_to_edit.reason_called == "Sale" %}selected{% endif %}>Sale</option>
+            <option value="Withdrawal" {% if call_to_edit.reason_called == "Withdrawal" %}selected{% endif %}>Withdrawal</option>
+            <option value="General Enquiry" {% if call_to_edit.reason_called == "General Enquiry" %}selected{% endif %}>General Enquiry</option>
+            <option value="Complaint" {% if call_to_edit.reason_called == "Complaint" %}selected{% endif %}>Complaint</option>
+            <option value="Online Support" {% if call_to_edit.reason_called == "Online Support" %}selected{% endif %}>Online Support</option>            
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Update</button>
+</form>
+
+{% endblock %}
