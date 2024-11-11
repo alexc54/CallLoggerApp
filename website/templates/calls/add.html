@@ -1,6 +1,8 @@
 {% extends "shared/base.html" %} {% block title %}Log New Call{% endblock %} {%
 block content %}
 
+<link rel="stylesheet" href="styles.css" />
+
 <h1 align="center">Log New Call</h1>
 <form method="POST">
   <div class="form-group">
@@ -14,7 +16,7 @@ block content %}
     />
   </div>
   <div class="form-group">
-    <label for="account_number">Account Number</label>
+    <label for="account_number">Account Number (8-10 Numbers)</label>
     <input
       type="number"
       class="form-control"
