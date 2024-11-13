@@ -1,0 +1,44 @@
+{% extends "shared/base.html" %} {% block title %}Log New Call{% endblock %} {%
+block content %}
+
+<link rel="stylesheet" href="styles.css" />
+
+<h1 align="center">Log New Call</h1>
+<form method="POST">
+  <div class="form-group">
+    <label for="customer_name">Customer Name</label>
+    <input
+      type="text"
+      class="form-control"
+      id="customer_name"
+      name="customer_name"
+      value="{{ customer_to_edit.name }}"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="account_number">Account Number</label>
+    <input
+      type="number"
+      class="form-control"
+      id="account_number"
+      name="account_number"
+      value="{{ customer_to_edit.account_number }}"
+      readonly
+    />
+  </div>
+  <div class="form-group">
+    <label for="postcode">Postcode</label>
+    <input
+      type="text"
+      class="form-control"
+      id="postcode"
+      name="postcode"
+      value="{{ customer_to_edit.postcode }}"
+      required
+    />
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}

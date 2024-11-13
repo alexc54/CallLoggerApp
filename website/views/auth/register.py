@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import render_template, request, flash, redirect, url_for
 from ...models import User
 from werkzeug.security import generate_password_hash
 from ... import db   
@@ -15,24 +15,38 @@ def register():
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
         is_admin = 'isAdmin' in request.form
+        
+        errors = []  # List to collect error messages
 
-        user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(email=email).first()    
+       
         if user:
-            flash('Email already exists.', category='error')           
-        elif not re.match(r"^[A-Za-z\s]+$", first_name):
-            flash("First name must contain only letters!", category='error')
-        elif not re.match(r"^[A-Za-z\s]+$", last_name):
-            flash("Surname must contain only letters!", category='error')       
-        elif len(email) < 4:
-            flash('Email must be greater than 3 characters.', category='error')
-        elif len(first_name) < 2:
-            flash('First name must be greater than 1 character.', category='error')
-        elif password1 != password2:
-            flash('Passwords don\'t match.', category='error')
-        elif len(password1) < 6:
-            flash('Password must be at least 6 characters.', category='error')        
-        else:         
-            #if passes validation then the user will be created
+            errors.append("Email already exists.")           
+        if not re.match(r"^[A-Za-z\s]+$", first_name):
+            errors.append("First name must contain only letters!")
+        if not re.match(r"^[A-Za-z\s]+$", last_name):
+            errors.append("Surname must contain only letters!")       
+        if len(email) < 4:
+            errors.append("Email must be greater than 3 characters.")
+        if len(first_name) < 2:
+            errors.append("First name must be greater than 1 character.")
+        if len(last_name) < 2:
+            errors.append("Surname must be greater than 1 character.")
+        if password1 != password2:
+            errors.append("Passwords don\'t match.")
+        if len(password1) < 6: #Checks the password is greater than 6 characters long
+            errors.append("Password must be at least 6 characters.")      
+        if not re.search(r"\d", password1):  #Checks the password has atleast one digit
+            errors.append("Password must contain at least one number.")  
+        if not re.search(r"[A-Z]", password1):  #Checks the password has at least one uppercase letter
+            errors.append("Password must contain at least one uppercase letter.")
+         
+        #Displays all the error messages on screen    
+        for error in errors:
+            flash(error, category='error')
+            
+        if not errors:        
+            #if validation passed then the new user will be created
             new_user = User(email=email, first_name=first_name, last_name=last_name,password=generate_password_hash(password1, method='pbkdf2:sha256'),
                 is_admin=is_admin)            
 

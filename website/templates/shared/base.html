@@ -36,7 +36,11 @@
           <a class="nav-item nav-link" id="view_call_log" href="/calls"
             >View Call Logs</a
           >
+          <a class="nav-item nav-link" id="customers" href="/customers"
+            >Customers</a
+          >
           <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+
           {% else %}
           <!-- What displays on nav bar when user is not logged in-->
           <a class="nav-item nav-link" id="login" href="/login">Login</a>
@@ -102,7 +106,7 @@
 
       /* Firefox */
       input[type="number"] {
-        -moz-appearance: textfield;
+        appearance: textfield;
       }
     </style>
   </body>

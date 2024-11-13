@@ -8,4 +8,6 @@ from .calls.view import *
 from .calls.edit import *
 from .calls.delete import *
 from .calls.add import *
+from .customers.view import *
+from .customers.edit import *
 

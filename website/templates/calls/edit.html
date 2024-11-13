@@ -6,15 +6,15 @@
 <form method="POST">
     <div class="form-group">
         <label for="customer_name">Customer Name</label>
-        <input type="text" class="form-control" id="customer_name" name="customer_name" value="{{ call_to_edit.customer.name }}" required>
+        <input type="text" class="form-control" id="customer_name" name="customer_name" value="{{ call_to_edit.customer.name }}" readonly>
     </div>
     <div class="form-group">
         <label for="account_number">Account Number (Must be 9 or 10 Digits)</label>
-        <input type="number" class="form-control" id="account_number" name="account_number" value="{{ call_to_edit.customer.account_number }}" required>
+        <input type="number" class="form-control" id="account_number" name="account_number" value="{{ call_to_edit.customer.account_number }}" readonly>
     </div>
     <div class="form-group">
         <label for="postcode">Postcode</label>
-        <input type="text" class="form-control" id="postcode" name="postcode" value="{{ call_to_edit.customer.postcode }}" required>
+        <input type="text" class="form-control" id="postcode" name="postcode" value="{{ call_to_edit.customer.postcode }}" readonly>
     </div>
     <div class="form-group">
         <label for="reason_called">Reason for Call</label>
