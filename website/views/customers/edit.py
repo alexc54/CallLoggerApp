@@ -21,9 +21,14 @@ def edit_customer(id):
         account_number = request.form['account_number']
         postcode = request.form['postcode'].upper()
        
-
+       
         #Validation
         errors = validate_call_data(customer_first_name, customer_last_name, account_number, postcode)
+        
+        existing_customer = Customer.query.filter_by(account_number=account_number).first()
+        if existing_customer and existing_customer.id != customer_to_edit.id:
+            errors.append("Account number already exists and is associated with another customer.")
+            
 
         if errors:
             #Error messages if validation fails

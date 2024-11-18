@@ -17,14 +17,10 @@ def add_call():
         reason_called = request.form.get('reason_called')
 
         #Validation method called
-        errors = validate_call_data(firstname, surname, account_number, postcode, reason_called)
-        #If there are any errors, this will display on the screen using flash
-        if errors:
-            for error in errors:
-                flash(error, category='error')
-            return render_template('calls/add.html', user=current_user)
-
-        #Check if the customer exists on the customer DB - Will add them if not
+        errors = validate_call_data(firstname, surname, account_number, postcode, reason_called)        
+        
+        
+         #Check if the customer exists on the customer DB - Will add them if not
         customer = Customer.query.filter_by(account_number=account_number).first()        
         if customer:
         #Check if the existing customer's name and postcode match the input data, code added so not case sensitive and whitespace ignored 
@@ -32,9 +28,17 @@ def add_call():
             customer.last_name.replace(" ", "").lower() != surname.replace(" ", "").lower() or \
             customer.postcode.replace(" ", "").lower() != postcode.replace(" ", "").lower():
         #If the customer details do not match what is already on record, flash an error and stop the call creation
-                flash("The customer details do not match the records for this account number. Verify the account number \
-                    or update the customer information on the customer records page.", category='error')   
-                return render_template('calls/add.html', user=current_user)
+                errors.append("The customer details do not match the records for this account number. Verify the account number \
+                    or update the customer information on the customer records page.")   
+               
+        
+        #If there are any errors, this will display on the screen using flash
+        if errors:
+            for error in errors:
+                flash(error, category='error')
+            return render_template('calls/add.html', user=current_user)
+
+       
         
         #If customer does not already exist then a new customer is created and added to the customer database
         if not customer:
