@@ -42,7 +42,7 @@
           <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
 
           {% else %}
-          <!-- What displays on nav bar when user is not logged in-->
+          <!--What displays on nav bar when user is not logged in-->
           <a class="nav-item nav-link" id="login" href="/login">Login</a>
           <a class="nav-item nav-link" id="register" href="/register"
             >Register</a
@@ -50,7 +50,7 @@
           {% endif %}
         </div>
         {% if user.is_authenticated %}
-        <!-- User's name aligned to the right -->
+        <!--Display users first and last name to the right of the navigation bar when logged in-->
         <span class="navbar-text ml-auto"
           >User: {{ user.first_name | title }} {{ user.last_name | title}}</span
         >
