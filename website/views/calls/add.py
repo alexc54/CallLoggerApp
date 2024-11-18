@@ -17,8 +17,7 @@ def add_call():
         reason_called = request.form.get('reason_called')
 
         #Validation method called
-        errors = validate_call_data(firstname, surname, account_number, postcode, reason_called)        
-        
+        errors = validate_call_data(firstname, surname, account_number, postcode, reason_called)                
         
          #Check if the customer exists on the customer DB - Will add them if not
         customer = Customer.query.filter_by(account_number=account_number).first()        

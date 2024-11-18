@@ -8,7 +8,7 @@ def validate_call_data(customer_first_name, customer_last_name, account_number, 
     if len(customer_first_name) < 3:
         errors.append("Customer name must be at least 3 characters long!")
     elif not re.match(r"^[A-Za-z\s]+$", customer_first_name):
-        errors.append("Customer name must contain only letters and spaces!")
+        errors.append("Customer name must contain only letters!")
 #Checks account number is a number and is 9 or 10 digits long
     if not account_number.isdigit() or not (9 <= len(account_number) <= 10):
         errors.append("Invalid Account Number! Account numbers can only be 9 or 10 digits long!")

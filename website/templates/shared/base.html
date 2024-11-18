@@ -49,6 +49,12 @@
           >
           {% endif %}
         </div>
+        {% if user.is_authenticated %}
+        <!-- User's name aligned to the right -->
+        <span class="navbar-text ml-auto"
+          >User: {{ user.first_name | title }} {{ user.last_name | title}}</span
+        >
+        {% endif %}
       </div>
     </nav>
 
