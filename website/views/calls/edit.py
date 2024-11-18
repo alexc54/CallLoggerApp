@@ -10,34 +10,37 @@ from .validation import validate_call_data
 
 @login_required
 def edit_call(id):
-    
+    #Checks the call database to see if the call exits
     call_to_edit = Call.query.get_or_404(id)
     
     if request.method == 'POST':
-        # Get form data
-        customer_name = request.form['customer_name']
+        #If call does exist then this gets the form data
+        customer_first_name = request.form['customer_first_name']
+        customer_last_name = request.form['customer_last_name']
         account_number = request.form['account_number']
         postcode = request.form['postcode'].upper()
         reason_called = request.form['reason_called']
 
-        # Validation
-        errors = validate_call_data(customer_name, account_number, postcode, reason_called)
+        #Validation
+        errors = validate_call_data(customer_first_name,customer_last_name, account_number, postcode, reason_called)
 
         if errors:
-            # Flash error messages if validation fails
+            #Error messages if validation fails
             for error in errors:
                 flash(error, "error")
-            # Render the edit template again with the current data
+            #Render the edit template again with the current data
             return render_template('calls/edit.html', call_to_edit=call_to_edit, user=current_user)
 
-        #if no errors then the data will be updated
-        call_to_edit.customer.name = customer_name
+        #If no errors then the call will be updated with new input
+        call_to_edit.customer.first_name = customer_first_name
+        call_to_edit.customer.last_name = customer_last_name
         call_to_edit.customer.account_number = account_number
         call_to_edit.customer.postcode = postcode
         call_to_edit.reason_called = reason_called        
 
+        #Saves the changes to the database, shows success message to user and the view calls page loads
         db.session.commit()
         flash("Call record updated successfully!", "success")
-        return redirect(url_for('views.view_calls'))  # Redirects to the view calls page
+        return redirect(url_for('views.view_calls')) 
 
     return render_template('calls/edit.html', call_to_edit=call_to_edit, user=current_user)

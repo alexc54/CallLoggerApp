@@ -4,7 +4,8 @@ from .. import db
 #Customer database
 class Customer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
+    first_name = db.Column(db.String(100))
+    last_name = db.Column(db.String(50))
     account_number = db.Column(db.Integer, unique=True)
     postcode = db.Column(db.String(8))
 

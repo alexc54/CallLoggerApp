@@ -3,13 +3,29 @@
 
 <h1 align="center">Call Logger Record</h1>
 </br>
+<!-- Search Bar -->
+<form method="GET" action="{{ url_for('views.view_calls') }}" class="mb-3">
+  <div class="d-flex">
+  <!-- Search Input -->
+  <input type="text" name="call_search" class="form-control" placeholder="Search by Call ID or Call Reason" value="{{ request.args.get('call_search', '') }}">
+  <!-- Search Button -->
+  <button type="submit" class="btn btn-primary ml-2">Search</button>
+    
+  <!-- Reset Button (Displays all customers again) -->
+    <a href="{{ url_for('views.view_calls') }}" class="btn btn-secondary ml-2">Reset</a>
+  </div>
+</form>
+
+</br>
+
 
 <table class="table">
   <thead>
     <tr>
       <!--Table columns that will display on the screen-->
       <th>Call ID</th>
-      <th>Customer Name</th>
+      <th>First Name</th>
+      <th>Surname</th>
       <th>Account Number</th>
       <th>Postcode</th>
       <th>Reason for Call</th>
@@ -23,7 +39,8 @@
     {% for call in calls %}
     <tr>
       <td>{{ call.id }}</td>
-      <td>{{ call.customer.name | title }}</td>
+      <td>{{ call.customer.first_name | title }}</td>
+      <td>{{ call.customer.last_name | title }}</td>
       <td>{{ call.customer.account_number }}</td>
       <td>{{ call.customer.postcode | upper }}</td>
       <td>{{ call.reason_called }}</td>
