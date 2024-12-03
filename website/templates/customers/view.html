@@ -3,6 +3,7 @@
     
     <h1 align="center">Customer Records</h1>
 </br>
+
     <!--Search Bar-->
     <form method="GET" action="{{ url_for('views.view_customers') }}" class="mb-3">
       <div class="d-flex">
@@ -13,6 +14,7 @@
       <!--Reset Button (Displays all customers again)-->
         <a href="{{ url_for('views.view_customers') }}" class="btn btn-secondary ml-2">Reset</a>
       </div>
+      
     </form>    
 </br>    
     <table class="table table-hover">      

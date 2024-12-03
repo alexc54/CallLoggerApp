@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from ...models import Customer
 from .. import views
 from ... import db  
-from ..calls.validation import validate_call_data
+from ..calls.validation import validate_call_data, check_existing_customer
 
 #Code to edit call
 @views.route('/edit-customer/<int:id>', methods=['GET', 'POST'])
@@ -24,22 +24,13 @@ def edit_customer(id):
         #Validation
         errors = validate_call_data(first_name, last_name, account_number, postcode)
         
-          #Checks if customer already exists but with a different account number.
-        existing_customer = Customer.query.filter(
-            Customer.first_name.ilike(first_name.strip()), #Ignores case type and whitespace
-            Customer.last_name.ilike(last_name.strip()),
-            Customer.postcode.ilike(postcode.strip()),
-            Customer.account_number != account_number,  #Checks if account numbers are different
-            Customer.id != customer_to_edit.id 
-        ).first()
-        
-        
+        existing_customer = check_existing_customer(first_name, last_name, postcode, account_number, customer_to_edit.id)
         if existing_customer:
-            errors.append("Customer with the same details already exists with a different account number!")  
+            errors.append(existing_customer) 
            
-        #Checks if account_number already in use by another customer.
-        existing_account_number = Customer.query.filter_by(account_number=account_number).first()
-        if existing_account_number and existing_account_number.id != customer_to_edit.id:
+        #Checks if account number already in use by another customer.
+        new_account_number = Customer.query.filter_by(account_number=account_number).first()
+        if new_account_number and new_account_number.id != customer_to_edit.id:
             errors.append("Account number already in use by another customer!")
            
         if errors:

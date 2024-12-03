@@ -10,20 +10,20 @@ DB_NAME = "CallLoggerDB.db"
 
 def create_app():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'hjshjhdjah kjshkjdhjs'  # Consider using an environment variable
+    app.config['SECRET_KEY'] = 'hjshjhdjah kjshkjdhjs' 
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     
     db.init_app(app)
     migrate.init_app(app, db)
     
-    from website.models import User, Call, Customer  # Importing models
+    from website.models import User, Call, Customer  #Importing all models
 
-    # Initialize the login manager
+    #Initialize the login manager for the authentication
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
 
-    # Import and register blueprints
+    #Import and register blueprints
     from .views import views
     from .views.auth import auth
     

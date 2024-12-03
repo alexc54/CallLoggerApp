@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from ... import db
 from ...models import Call, Customer
 from ..import views
-from .validation import validate_call_data
+from .validation import validate_call_data, check_existing_customer
 
 @views.route('/add-call', methods=['GET', 'POST'])
 @login_required #Makes sure user is logged in
@@ -16,21 +16,15 @@ def add_call():
         postcode = request.form.get('postcode')
         reason_called = request.form.get('reason_called')
 
-        #Validation method called
+        #Validation function called
         errors = validate_call_data(first_name, last_name, account_number, postcode, reason_called)    
-              
-        #Checks if customer already exists but with a different account number.
-        existing_customer = Customer.query.filter(
-            Customer.first_name.ilike(first_name.strip()), #Ignores case type and whitespace
-            Customer.last_name.ilike(last_name.strip()),
-            Customer.postcode.ilike(postcode.strip()),
-            Customer.account_number != account_number  #Checks if account numbers are different
-        ).first()
         
+        #Function that checks if the customer details entered exist under a different account number
+        existing_customer = check_existing_customer(first_name, last_name, postcode, account_number)
         if existing_customer:
-             errors.append("Customer with the same details already exists with a different account number!") 
+            errors.append(existing_customer) 
         
-         #Check if the customer exists on the customer DB - Will add them if not
+        #Check if the customer exists on the customer DB - Will add them if not
         customer = Customer.query.filter_by(account_number=account_number).first()        
         if customer:
         #Check if the existing customer's name and postcode match the input data, code added so not case sensitive and whitespace ignored 
@@ -66,4 +60,3 @@ def add_call():
         return redirect(url_for('views.view_calls'))
 
     return render_template('calls/add.html', user=current_user)
-

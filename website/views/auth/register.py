@@ -17,7 +17,7 @@ def register():
         password2 = request.form.get('password2')
         is_admin = 'isAdmin' in request.form
         
-        errors = []  # List created, any errors that occur are added to this list and displayed when user submits
+        errors = []  #List created, any errors that occur are added to this list and displayed when user submits
 
         #Checks the database to see if email exists
         user = User.query.filter_by(email=email).first()    
@@ -50,7 +50,7 @@ def register():
         if not re.search(r"[A-Z]", password1):  
             errors.append("Password must contain at least one uppercase letter.")
          
-        #Displays all the errors    
+        #Displays errors onto the screen
         for error in errors:
             flash(error, category='error')
             

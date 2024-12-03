@@ -19,9 +19,9 @@ def login():
                 login_user(user, remember=True)
                 return redirect(url_for('views.home'))
             else:
-                flash("Incorrect password, please try again.", category='error')
+                flash("Incorrect password, please try again!", category='error')
         #If the email does not exist in the database, the below error appears to the user
         else:
-            flash("Email does not exist.", category='error')
+            flash("Email does not exist!", category='error')
 
     return render_template("auth/login.html", user=current_user)

@@ -1,8 +1,9 @@
 import re
+from ...models import Customer
 
 #Function that validates user entry before changes made to db.
 def validate_call_data(customer_first_name, customer_last_name, account_number, postcode, reason_called=None):
-    errors = []  # List to collect error messages
+    errors = []  #List to collect all errors
 
 #Checks customer name is atleast 3 characters long and only contains letters and spaces(No numbers or special characters allowed)
     if len(customer_first_name) < 3:
@@ -44,4 +45,20 @@ def validate_postcode(postcode):
     #Check input postcode against pattern, error message will display if invalid
     if not pattern.match(postcode.strip()):
         return "Invalid Postcode!"
+    return None
+
+
+#Functions that checks if customer details entered already exists but with a different account number 
+def check_existing_customer(first_name, last_name, postcode, account_number, current_customer_id=None):
+       
+    existing_customer = Customer.query.filter(
+        Customer.first_name.ilike(first_name.strip()),  # Ignore case and whitespace
+        Customer.last_name.ilike(last_name.strip()),
+        Customer.postcode.ilike(postcode.strip()),
+        Customer.account_number != account_number,  # Ensure the account number is different
+        Customer.id != current_customer_id  # Exclude the current customer if provided
+    ).first()
+
+    if existing_customer:
+        return "Customer with the same details already exists with a different account number!"
     return None
