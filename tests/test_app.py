@@ -1,7 +1,7 @@
 import pytest
 from website import create_app
 
-#Create the Flask app so tests can take place
+#Create the app so tests can take place
 @pytest.fixture
 def client():
     app = create_app()  
