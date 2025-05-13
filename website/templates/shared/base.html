@@ -39,6 +39,11 @@
           <a class="nav-item nav-link" id="customers" href="/customers"
             >Customers</a
           >
+
+          {% if user.is_admin %}
+          <a class="nav-item nav-link" id="admin" href="/users">Manage Users</a>
+          {% endif %}
+
           <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
 
           {% else %}

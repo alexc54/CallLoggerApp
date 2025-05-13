@@ -1,0 +1,36 @@
+<!-- templates/auth/users.html -->
+{% extends "shared/base.html" %} {% block content %}
+<h2>Manage Users</h2>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Employee Name</th>
+      <th>Email</th>
+      <th>Admin?</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in users %}
+    <tr>
+      <td>{{ user.first_name }} {{ user.last_name }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ 'Yes' if user.is_admin else 'No' }}</td>
+      <td>
+        {% if not user.is_admin %}
+        <a href="{{ url_for('admin.give_admin_access', user_id=user.id) }}"
+          >Give Admin Access</a
+        >
+        {% elif user.id == current_user.id %}
+        <span>No Action Available</span>
+        {% else %}
+        <a href="{{ url_for('admin.remove_admin_access', user_id=user.id) }}"
+          >Remove Admin Access</a
+        >
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

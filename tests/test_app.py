@@ -59,6 +59,7 @@ def test_login_incorrect_credentials(client):
     #Checks login page is loaded and no diversion to homepage
     response = client.get('/login')  
     assert response.status_code == 200  
+
     
 #Testing users can logout    
 def test_logout(client):    
