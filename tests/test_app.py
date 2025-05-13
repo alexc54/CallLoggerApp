@@ -41,7 +41,7 @@ def test_register_page_loads(client):
 def test_login_correct_credentials(client):    
     #Loads the login page and uses an already existing testing account credentials 
     client.post('/login', data={
-        'email': 'test@hotmail.com',
+        'email': 'admin@hotmail.com',
         'password': 'Password1'
     })    
     #credentials submitted and checks homepage is loaded
@@ -64,7 +64,7 @@ def test_login_incorrect_credentials(client):
 def test_logout(client):    
     #Loads the login page and uses an already existing testing account credentials 
     client.post('/login', data={
-        'email': 'test@hotmail.com',
+        'email': 'admin@hotmail.com',
         'password': 'Password1'
     })    
     response = client.get('/')  
@@ -82,7 +82,7 @@ def test_logout(client):
 def test_access_pages(client):    
     #Logs user in using existing testing account credentials 
     client.post('/login', data={
-        'email': 'test@hotmail.com',
+        'email': 'admin@hotmail.com',
         'password': 'Password1'
     })    
     #Test user can access all pages that require login
