@@ -37,55 +37,56 @@ def test_register_page_loads(client):
     
 #Authetication Tests
     
-#Testing if users can successfully login to the application   
-def test_login_correct_credentials(client):    
-    #Loads the login page and uses an already existing testing account credentials 
-    client.post('/login', data={
-        'email': 'admin@hotmail.com',
-        'password': 'Password1'
-    })    
-    #credentials submitted and checks homepage is loaded
-    response = client.get('/')  
-    assert response.status_code == 200 
+#Testing if users can login to the application   
+def test_login_correct_credentials(client, test_user):
+    response = client.post('/login', data={
+        'email': 'testuser@example.com',
+        'password': 'CorrectPassword123'
+    }, follow_redirects=True)
+
+    assert response.status_code == 200
+    assert b"Logged in successfully!" in response.data
+    assert b"User: Test User" in response.data  #Checks navbar displays name
+
+
     
     
-#Testing authentication if user uses incorrect details
-def test_login_incorrect_credentials(client):    
-    #Loads the login page and uses incorrect credentials 
-    client.post('/login', data={
-        'email': 'incorrectemail@hotmail.com',
-        'password': 'IncorrectPassword1'
-    })    
-    #Checks login page is loaded and no diversion to homepage
-    response = client.get('/login')  
-    assert response.status_code == 200  
+#Testing authentication with incorrect details
+def test_login_incorrect_credentials(client):
+    response = client.post('/login', data={
+        'email': 'wrong@example.com',
+        'password': 'WrongPassword123'
+    }, follow_redirects=True)
+
+    assert response.status_code == 200
+    assert b"Invalid email or password!" in response.data
+
 
     
 #Testing users can logout    
-def test_logout(client):    
-    #Loads the login page and uses an already existing testing account credentials 
+def test_logout(client, test_user):
+    # Step 1: Log in
     client.post('/login', data={
-        'email': 'admin@hotmail.com',
-        'password': 'Password1'
-    })    
-    response = client.get('/')  
-    assert response.status_code == 200   
+        'email': 'testuser@example.com',
+        'password': 'CorrectPassword123'
+    }, follow_redirects=True)
+
     #Logging out
-    response = client.get('/logout')    
-    #Checks that logout route redirects user back to the login page
-    assert response.status_code == 302
-    response = client.get('/login')  
-    assert b'Call Logger App' in response.data
+    response = client.get('/logout', follow_redirects=True)
+
+    #Check user is logged out
+    assert response.status_code == 200
+    assert b"Sign in" in response.data          
     
     
 
 #Testing users can access pages when logged in    
-def test_access_pages(client):    
+def test_access_pages(client, test_user):    
     #Logs user in using existing testing account credentials 
     client.post('/login', data={
-        'email': 'admin@hotmail.com',
-        'password': 'Password1'
-    })    
+        'email': 'testuser@example.com',
+        'password': 'CorrectPassword123'
+    }, follow_redirects=True)  
     #Test user can access all pages that require login
     response = client.get('/customers')  
     assert response.status_code == 200  #Checks page has loaded correctly

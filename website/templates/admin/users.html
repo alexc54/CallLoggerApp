@@ -1,36 +1,68 @@
 <!-- templates/auth/users.html -->
 {% extends "shared/base.html" %} {% block content %}
-<h2>Manage Users</h2>
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th>Employee Name</th>
-      <th>Email</th>
-      <th>Admin?</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for user in users %}
-    <tr>
-      <td>{{ user.first_name }} {{ user.last_name }}</td>
-      <td>{{ user.email }}</td>
-      <td>{{ 'Yes' if user.is_admin else 'No' }}</td>
-      <td>
-        {% if not user.is_admin %}
-        <a href="{{ url_for('admin.give_admin_access', user_id=user.id) }}"
-          >Give Admin Access</a
-        >
-        {% elif user.id == current_user.id %}
-        <span>No Action Available</span>
-        {% else %}
-        <a href="{{ url_for('admin.remove_admin_access', user_id=user.id) }}"
-          >Remove Admin Access</a
-        >
-        {% endif %}
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-{% endblock %}
+
+
+<h1 align="center">Manage Users</h1>
+</br>
+
+<!-- Search Bar -->
+<form method="GET" action="{{ url_for('admin.users') }}" class="mb-3">
+  <div class="d-flex">
+    <!-- Search Input -->
+    <input
+      type="text"
+      name="employee_search"
+      class="form-control"
+      placeholder="Search by Employee Surname"
+      value="{{ request.args.get('employee_search', '') }}"
+    />
+    <!-- Search Button -->
+    <button type="submit" class="btn btn-primary ml-2">Search</button>
+
+    <!-- Reset Button (Displays all customers again) -->
+    <a href="{{ url_for('admin.users') }}" class="btn btn-secondary ml-2"
+      >Reset</a
+    >
+  </div>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Modify</th>
+        <th>Employee Name</th>
+        <th>Email</th>
+        <th>Admin?</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <td>
+          <!-- Edit option -->
+          <a href="{{ url_for('admin.edit_user', user_id=user.id) }}">
+            <i class="bi bi-pencil-fill"></i>
+          </a>
+        </td>
+        <td>{{ user.first_name | title}} {{ user.last_name| title}}</td>
+        <td>{{ user.email| title }}</td>
+        <td>{{ 'Yes' if user.is_admin else 'No' }}</td>
+        <td>
+          {% if not user.is_admin %}
+          <a href="{{ url_for('admin.give_admin_access', user_id=user.id) }}"
+            >Give Admin Access</a
+          >
+          {% elif user.id == current_user.id %}
+          <span>No Action Available</span>
+          {% else %}
+          <a href="{{ url_for('admin.remove_admin_access', user_id=user.id) }}"
+            >Remove Admin Access</a
+          >
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endblock %}
+</form>

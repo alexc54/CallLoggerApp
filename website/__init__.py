@@ -4,9 +4,6 @@ from os import path
 from flask_login import LoginManager
 from flask_migrate import Migrate
 
-
-
-
 db = SQLAlchemy()
 migrate = Migrate()
 DB_NAME = "CallLoggerDB.db"
@@ -21,8 +18,6 @@ def create_app():
     migrate.init_app(app, db)
     
     from website.models import User, Call, Customer  #Importing all models
-    
-    
     
 
     #Initialize the login manager for the authentication

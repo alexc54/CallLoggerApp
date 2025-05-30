@@ -5,6 +5,7 @@ from ... import db
 from flask_login import login_user, current_user
 from . import auth
 import re
+from website.views.auth.user_validation import validate_user_details
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
@@ -17,26 +18,13 @@ def register():
         password2 = request.form.get('password2')
         is_admin = 'isAdmin' in request.form
         
-        errors = []  #List created, any errors that occur are added to this list and displayed when user submits
+        #errors = []  #List created, any errors that occur are added to this list and displayed when user submits
 
-        #Checks the database to see if email exists
-        user = User.query.filter_by(email=email).first()    
-        #If the email does exist in the database, the below error appears to the user
-        if user:
-            errors.append("Email already exists.")     
-        #Checks to make sure first and surname only contain letters      
-        if not re.match(r"^[A-Za-z\s]+$", first_name):
-            errors.append("First name must contain only letters!")
-        if not re.match(r"^[A-Za-z\s]+$", last_name):
-            errors.append("Surname must contain only letters!")       
-        if len(email) < 4:
-        #Checks email is over 3 characters
-            errors.append("Email must be greater than 3 characters.")
-        #Checks first and last name are greater than 1 character
-        if len(first_name) < 2:
-            errors.append("First name must be greater than 1 character.")
-        if len(last_name) < 2:
-            errors.append("Surname must be greater than 1 character.")
+
+        errors = validate_user_details(first_name, last_name, email)
+        
+        
+        
         #Checks both passwords input are the same
         if password1 != password2:
             errors.append("Passwords don\'t match.")

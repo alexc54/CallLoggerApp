@@ -52,8 +52,7 @@ def login():
                 else:
                     flash("Invalid email or password!", category='error')
                     remaining_attempts = MAX_LOGIN_ATTEMPTS - attempts
-                    if remaining_attempts > 0:
-                        flash(f"You have {remaining_attempts} login attempt(s) before being timed out for {LOCKOUT_MINUTES} minutes!", category='error')
+                    
                 
         #If the email does not exist in the database, the below error appears to the user
         else:
