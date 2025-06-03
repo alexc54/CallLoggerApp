@@ -71,3 +71,9 @@ def test_user_cannot_access_sensitive_pages_without_login(client):
     assert response.status_code == 302 
     response = client.get('/login')  
     assert b'Call Logger App' in response.data
+    
+    response = client.get('/users')
+   #Checks that user is redirected to login page and no access given
+    assert response.status_code == 302 
+    response = client.get('/login')  
+    assert b'Call Logger App' in response.data

@@ -11,9 +11,6 @@ def test_login_correct_credentials(client, test_user):
     assert response.status_code == 200
     assert b"Logged in successfully!" in response.data
     assert b"User: Test User" in response.data  #Checks navbar displays name
-
-
-    
     
 #Testing authentication with incorrect details
 def test_login_incorrect_credentials(client):
@@ -24,8 +21,6 @@ def test_login_incorrect_credentials(client):
 
     assert response.status_code == 200
     assert b"Invalid email or password!" in response.data
-
-
     
 #Testing users can logout    
 def test_logout(client, test_user):
@@ -42,4 +37,15 @@ def test_logout(client, test_user):
     assert response.status_code == 200
     assert b"Sign in" in response.data          
     
-    
+ 
+def test_mismatch_customer_creates_error(client, login_as, test_user, customer):
+    login_as(test_user)
+    data = {
+        'customer_first_name': 'Jane', 
+        'customer_last_name': 'Potts',
+        'account_number': customer.account_number,
+        'postcode': customer.postcode,
+        'reason_called': 'Withdrawal'
+    }
+    response = client.post('/add-call', data=data)
+    assert b'do not match the records for this account number' in response.data
