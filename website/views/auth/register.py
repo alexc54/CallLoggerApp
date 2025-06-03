@@ -21,7 +21,7 @@ def register():
         #errors = []  #List created, any errors that occur are added to this list and displayed when user submits
 
 
-        errors = validate_user_details(first_name, last_name, email)
+        errors = validate_user_details(first_name, last_name, email,user_id=None)
         
         
         
