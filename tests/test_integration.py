@@ -1,5 +1,4 @@
-    
-#Authetication Tests
+    #Authetication Tests
     
 #Testing if users can login to the application   
 def test_login_correct_credentials(client, test_user):
@@ -37,7 +36,7 @@ def test_logout(client, test_user):
     assert response.status_code == 200
     assert b"Sign in" in response.data          
     
- 
+ #Tests if user tries to input wrong customer detail for existing account number
 def test_mismatch_customer_creates_error(client, login_as, test_user, customer):
     login_as(test_user)
     data = {

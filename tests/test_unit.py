@@ -2,10 +2,6 @@ from website.views.calls.validation import validate_call_data
 from website.views.calls.validation import validate_postcode
 from website.views.auth.user_validation import validate_user_details
 
-
-
-
-
 #Test to see if the login page loads when application is opened
 def test_login_page_loads(client):
     response = client.get('/login')  
